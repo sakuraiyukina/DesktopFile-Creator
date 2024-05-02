@@ -1,0 +1,12 @@
+Usage:  Desktop-Creator COMMAND [OPTIONS] [ARGS...]
+
+Commands:
+	add		Create a new desktop file.
+	del		Delete existing desktop file.
+	set		Set desktop file key's value.
+
+Global Options:
+	-h, --help
+	-v, --version
+
+Run 'DesktopFile-Creator COMMAND --help' for more information on a command.

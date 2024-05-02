@@ -1,0 +1,5 @@
+Usage: DesktopFile-Creator set [OPTIONS] [COMMANDS] [KEY=VALUE] [ARGS...]
+
+Set desktop file key's value.
+
+Options:

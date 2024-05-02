@@ -1,0 +1,8 @@
+Usage: DesktopFile-Creator add [OPTIONS] [COMMANDS] [ARGS...]
+
+Create a new .desktop file from AppImage, Command, Executable file or Script.
+
+Options:
+  -c, --stdout		Write to standard output and don't delete input files.
+  -b, --base64
+  -q, --quiet		Suppress the pull output.
