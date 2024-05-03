@@ -1,3 +1,4 @@
+use std::fs;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -23,9 +24,6 @@ enum Subcommand {
 }
 
 pub fn parse_arguments(args: Vec<String>) {
-	if args.len() < 2 {
-		print_help("help");
-	}
 
 	let cmd = Command::new("DesktopFile-Creator")
 
@@ -93,11 +91,12 @@ pub fn parse_arguments(args: Vec<String>) {
 		Subcommand::Set => desktop_file_set::init(args),
 		Subcommand::Unknown => print_help("help"),
 	}
+
 }
 
 pub fn print_help(help_type: &str) {
-	let file_path = format!("src/help/{}", help_type);
-	if let Ok(file) = File::open(&file_path) {
+	let help_path = format!("src/help/{}", help_type);
+	if let Ok(file) = File::open(help_path) {
 		for line in BufReader::new(file).lines() {
 			if let Ok(line_content) = line {
 				println!("{}", line_content);
