@@ -4,5 +4,5 @@ Delete existing desktop file.
 
 Options:
   -f, --force       Ignore nonexistent files and arguments, enforce delete.
-  -q, --quiet		Suppress the pull output.
-  -v, --verbose		Be verbose.
+  -q, --quiet       Suppress the pull output.
+  -v, --verbose     Be verbose.
