@@ -11,3 +11,7 @@ build = "build.rs"
 
 [dependencies]
 clap = "4.5.4"
+
+[profile.release]
+opt-level = "s"
+lto = true
