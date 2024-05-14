@@ -5,12 +5,14 @@ use clap::{Arg, Command};
 use self::file::{
 	desktop_file_add,
 	desktop_file_del,
+	desktop_file_get,
 	desktop_file_set,
 };
 
 mod file {
 	pub mod desktop_file_add;
 	pub mod desktop_file_del;
+	pub mod desktop_file_get;
 	pub mod desktop_file_set;
 }
 
@@ -18,6 +20,7 @@ pub enum Help {
 	General,
 	Add,
 	Del,
+	Get,
 	Set,
 	Unknown,
 }
@@ -26,6 +29,7 @@ impl Help {
 	const GENERAL: &'static str = include_str!("help/help");
 	const ADD: &'static str = include_str!("help/subcommand-add");
 	const DEL: &'static str = include_str!("help/subcommand-del");
+	const GET: &'static str = include_str!("help/subcommand-get");
 	const SET: &'static str = include_str!("help/subcommand-set");
 
 	pub fn print_help(help_type: &str) {
@@ -33,6 +37,7 @@ impl Help {
 			"general"        => Self::GENERAL,
 			"subcommand-add" => Self::ADD,
 			"subcommand-del" => Self::DEL,
+			"subcommand-get" => Self::GET,
 			"subcommand-set" => Self::SET,
 			_                => Self::GENERAL,
 		};
@@ -52,98 +57,122 @@ pub fn parse_arguments(args: Vec<String>) {
 				.short('b')
 				.long("base64")
 			)
+
 			.arg(Arg::new("stdout")
 				.short('c')
 				.long("stdout")
 			)
+
 			.arg(Arg::new("quiet")
 				.short('q')
 				.long("quiet")
 			)
+
 			.arg(Arg::new("help")
 				.short('h')
 				.long("help")
 			)
+
 			.arg(Arg::new("Type")
-				.short('t')
-				.long("type"))
-			/*
+				.short('T')
+				.long("type")
+			)
+
 			.arg(Arg::new("Version")
-				.short('v')
+				.short('V')
 				.long("version")
 			)
 
-			 */
 			.arg(Arg::new("Name")
-				.short('n')
+				.short('N')
 				.long("name")
 			)
+
 			.arg(Arg::new("GenericName")
-				.short('g')
+				.short('G')
 				.long("genericname")
 			)
+
 			.arg(Arg::new("NoDisplay")
 				.long("nodisplay")
 			)
+
 			.arg(Arg::new("Comment")
 				.short('C')
 				.long("comment")
 			)
+
 			.arg(Arg::new("Icon")
-				.short('i')
+				.short('I')
 				.long("icon")
 			)
+
 			.arg(Arg::new("Hidden")
+				.short('H')
 				.long("hidden")
 			)
+
 			.arg(Arg::new("OnlyShowIn")
 				.long("onlyshowin")
 			)
+
 			.arg(Arg::new("NotShowIn")
 				.long("notshowin")
 			)
+
 			.arg(Arg::new("DBusActivatable")
 				.long("dbusactivatable")
 			)
+
 			.arg(Arg::new("TryExec")
-				.short('T')
-				.long("typeexec")
+				.short('R')
+				.long("tryexec")
 			)
+
 			.arg(Arg::new("Exec")
-				.short('e')
+				.short('E')
 				.long("exec")
 			)
+
 			.arg(Arg::new("Path")
-				.short('p')
+				.short('P')
 				.long("path")
 			)
+
 			.arg(Arg::new("Terminal")
 				.long("terminal")
 			)
+
 			.arg(Arg::new("Actions")
-				.short('a')
+				.short('A')
 				.long("actions")
 			)
+
 			.arg(Arg::new("MimeType")
-				.short('m')
+				.short('M')
 				.long("mimetype")
 			)
+
 			.arg(Arg::new("Categories")
-				.short('G')
+				.short('W')
 				.long("categories")
 			)
+
 			.arg(Arg::new("Keywords")
-				.short('k')
+				.short('K')
 				.long("keywords")
 			)
+
 			.arg(Arg::new("StartupNotify")
 				.long("startupnotify")
 			)
+
 			.arg(Arg::new("StartupWMClass")
 				.long("startupwmclass")
 			)
+
 			.arg(Arg::new("URL")
-				.short('u')
+				.short('U')
 				.long("url")
 			)
 		)
@@ -153,16 +182,22 @@ pub fn parse_arguments(args: Vec<String>) {
 				.short('f')
 				.long("force")
 			)
+
 			.arg(Arg::new("quiet")
 				.short('q')
 				.long("quiet"))
+
 			.arg(Arg::new("verbose")
 				.short('n')
 				.long("verbose"))
 		)
 
+		.subcommand(Command::new("get")
+			// TODO;
+		)
+
 		.subcommand(Command::new("set")
-		            // TODO;
+		    // TODO;
 		)
 
 		// Global Options
@@ -173,7 +208,6 @@ pub fn parse_arguments(args: Vec<String>) {
 
 		.arg(Arg::new("version")
 			.short('v')
-			.long("version")
 			.global(true))
 
 
@@ -183,6 +217,7 @@ pub fn parse_arguments(args: Vec<String>) {
 	match cmd.subcommand() {
 		Some(("add", _)) => desktop_file_add::init(args),
 		Some(("del", _)) => desktop_file_del::init(args),
+		Some(("get", _)) => desktop_file_get::init(args),
 		Some(("set", _)) => desktop_file_set::init(args),
 		_ => { Help::print_help("general") }
 	};
