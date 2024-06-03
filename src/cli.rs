@@ -1,4 +1,4 @@
-use std::io::BufRead;
+use std::collections::HashMap;
 
 use clap::{Arg, Command};
 
@@ -22,25 +22,22 @@ pub enum Help {
 	Del,
 	Get,
 	Set,
-	Unknown,
 }
 
 impl Help {
-	const GENERAL: &'static str = include_str!("help/help");
-	const ADD: &'static str = include_str!("help/subcommand-add");
-	const DEL: &'static str = include_str!("help/subcommand-del");
-	const GET: &'static str = include_str!("help/subcommand-get");
-	const SET: &'static str = include_str!("help/subcommand-set");
+	fn help_strings() -> HashMap<&'static str, &'static str> {
+		let mut map = HashMap::new();
+		map.insert("general", include_str!("help/help"));
+		map.insert("subcommand-add", include_str!("help/subcommand-add"));
+		map.insert("subcommand-del", include_str!("help/subcommand-del"));
+		map.insert("subcommand-get", include_str!("help/subcommand-get"));
+		map.insert("subcommand-set", include_str!("help/subcommand-set"));
+		map
+	}
 
 	pub fn print_help(help_type: &str) {
-		let help = match help_type {
-			"general"        => Self::GENERAL,
-			"subcommand-add" => Self::ADD,
-			"subcommand-del" => Self::DEL,
-			"subcommand-get" => Self::GET,
-			"subcommand-set" => Self::SET,
-			_                => Self::GENERAL,
-		};
+		let help_strings: HashMap<&str, &str> = Self::help_strings();
+		let help: &str = help_strings.get(help_type).unwrap();
 		println!("{}", help);
 	}
 }
@@ -49,7 +46,9 @@ pub fn parse_arguments(args: Vec<String>) {
 	let cmd = Command::new("DesktopFile-Creator")
 
 		// Global Settings
+		.version("0.1.0")
 		.disable_help_flag(true)
+		.disable_version_flag(true)
 
 		// Subcommands
 		.subcommand(Command::new("add")
@@ -204,21 +203,33 @@ pub fn parse_arguments(args: Vec<String>) {
 		.arg(Arg::new("cmd.help")
 			.short('h')
 			.long("help")
+			.num_args(0)
 			.global(true))
 
 		.arg(Arg::new("cmd.version")
 			.short('v')
+			.long("version")
+			.num_args(0)
 			.global(true))
 
 
 		.get_matches();
 
-	// Get Argument subcommands and parse to ENUM.
-	match cmd.subcommand() {
-		Some(("add", _)) => desktop_file_add::init(args),
-		Some(("del", _)) => desktop_file_del::init(args),
-		Some(("get", _)) => desktop_file_get::init(args),
-		Some(("set", _)) => desktop_file_set::init(args),
-		_ => {},
-	};
+	if cmd.get_flag("cmd.help") {
+		Help::print_help("general");
+		return;
+	}
+	else if cmd.get_flag("cmd.version") {
+		println!("{}", env!("CARGO_PKG_VERSION"));
+		return;
+	}
+	else {
+		match cmd.subcommand() {
+			Some(("add", _)) => desktop_file_add::init(args),
+			Some(("del", _)) => desktop_file_del::init(args),
+			Some(("get", _)) => desktop_file_get::init(args),
+			Some(("set", _)) => desktop_file_set::init(args),
+			_ => {},
+		}
+	}
 }
