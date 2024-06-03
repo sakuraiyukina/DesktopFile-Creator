@@ -53,141 +53,141 @@ pub fn parse_arguments(args: Vec<String>) {
 
 		// Subcommands
 		.subcommand(Command::new("add")
-			.arg(Arg::new("base64")
+			.arg(Arg::new("cmd.base64")
 				.short('b')
 				.long("base64")
 			)
 
-			.arg(Arg::new("stdout")
+			.arg(Arg::new("cmd.add.stdout")
 				.short('c')
 				.long("stdout")
 			)
 
-			.arg(Arg::new("quiet")
+			.arg(Arg::new("cmd.add.quiet")
 				.short('q')
 				.long("quiet")
 			)
 
-			.arg(Arg::new("help")
+			.arg(Arg::new("cmd.add.help")
 				.short('h')
 				.long("help")
 			)
 
-			.arg(Arg::new("Type")
+			.arg(Arg::new("cmd.add.Type")
 				.short('T')
 				.long("type")
 			)
 
-			.arg(Arg::new("Version")
+			.arg(Arg::new("cmd.add.Version")
 				.short('V')
 				.long("version")
 			)
 
-			.arg(Arg::new("Name")
+			.arg(Arg::new("cmd.add.Name")
 				.short('N')
 				.long("name")
 			)
 
-			.arg(Arg::new("GenericName")
+			.arg(Arg::new("cmd.add.GenericName")
 				.short('G')
 				.long("genericname")
 			)
 
-			.arg(Arg::new("NoDisplay")
+			.arg(Arg::new("cmd.add.NoDisplay")
 				.long("nodisplay")
 			)
 
-			.arg(Arg::new("Comment")
+			.arg(Arg::new("cmd.add.Comment")
 				.short('C')
 				.long("comment")
 			)
 
-			.arg(Arg::new("Icon")
+			.arg(Arg::new("cmd.add.Icon")
 				.short('I')
 				.long("icon")
 			)
 
-			.arg(Arg::new("Hidden")
+			.arg(Arg::new("cmd.add.Hidden")
 				.short('H')
 				.long("hidden")
 			)
 
-			.arg(Arg::new("OnlyShowIn")
+			.arg(Arg::new("cmd.add.OnlyShowIn")
 				.long("onlyshowin")
 			)
 
-			.arg(Arg::new("NotShowIn")
+			.arg(Arg::new("cmd.add.NotShowIn")
 				.long("notshowin")
 			)
 
-			.arg(Arg::new("DBusActivatable")
+			.arg(Arg::new("cmd.add.DBusActivatable")
 				.long("dbusactivatable")
 			)
 
-			.arg(Arg::new("TryExec")
+			.arg(Arg::new("cmd.add.TryExec")
 				.short('R')
 				.long("tryexec")
 			)
 
-			.arg(Arg::new("Exec")
+			.arg(Arg::new("cmd.add.Exec")
 				.short('E')
 				.long("exec")
 			)
 
-			.arg(Arg::new("Path")
+			.arg(Arg::new("cmd.add.Path")
 				.short('P')
 				.long("path")
 			)
 
-			.arg(Arg::new("Terminal")
+			.arg(Arg::new("cmd.add.Terminal")
 				.long("terminal")
 			)
 
-			.arg(Arg::new("Actions")
+			.arg(Arg::new("cmd.add.Actions")
 				.short('A')
 				.long("actions")
 			)
 
-			.arg(Arg::new("MimeType")
+			.arg(Arg::new("cmd.add.MimeType")
 				.short('M')
 				.long("mimetype")
 			)
 
-			.arg(Arg::new("Categories")
+			.arg(Arg::new("cmd.add.Categories")
 				.short('W')
 				.long("categories")
 			)
 
-			.arg(Arg::new("Keywords")
+			.arg(Arg::new("cmd.add.Keywords")
 				.short('K')
 				.long("keywords")
 			)
 
-			.arg(Arg::new("StartupNotify")
+			.arg(Arg::new("cmd.add.StartupNotify")
 				.long("startupnotify")
 			)
 
-			.arg(Arg::new("StartupWMClass")
+			.arg(Arg::new("cmd.add.StartupWMClass")
 				.long("startupwmclass")
 			)
 
-			.arg(Arg::new("URL")
+			.arg(Arg::new("cmd.add.URL")
 				.short('U')
 				.long("url")
 			)
 		)
 
 		.subcommand(Command::new("del")
-			.arg(Arg::new("force")
+			.arg(Arg::new("cmd.del.force")
 				.short('f')
 				.long("force")
 			)
 
-			.arg(Arg::new("quiet")
+			.arg(Arg::new("cmd.del.quiet")
 				.short('q')
 				.long("quiet"))
 
-			.arg(Arg::new("verbose")
+			.arg(Arg::new("cmd.del.verbose")
 				.short('n')
 				.long("verbose"))
 		)
@@ -201,12 +201,12 @@ pub fn parse_arguments(args: Vec<String>) {
 		)
 
 		// Global Options
-		.arg(Arg::new("help")
+		.arg(Arg::new("cmd.help")
 			.short('h')
 			.long("help")
 			.global(true))
 
-		.arg(Arg::new("version")
+		.arg(Arg::new("cmd.version")
 			.short('v')
 			.global(true))
 
@@ -219,6 +219,6 @@ pub fn parse_arguments(args: Vec<String>) {
 		Some(("del", _)) => desktop_file_del::init(args),
 		Some(("get", _)) => desktop_file_get::init(args),
 		Some(("set", _)) => desktop_file_set::init(args),
-		_ => { Help::print_help("general") }
+		_ => {},
 	};
 }
