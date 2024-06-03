@@ -12,5 +12,6 @@ include = [
 clap = "4.5.4"
 
 [profile.release]
+overflow-checks = true
 opt-level = "s"
 lto = true
