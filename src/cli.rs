@@ -1,6 +1,12 @@
-use std::collections::HashMap;
+use std::{
+	collections::HashMap,
+	process::exit
+};
 
-use clap::{Arg, Command};
+use clap::{
+	Arg,
+	Command
+};
 
 use self::file::{
 	desktop_file_add,
@@ -71,11 +77,6 @@ pub fn parse_arguments(args: Vec<String>) {
 				.long("quiet")
 			)
 
-			.arg(Arg::new("cmd.add.help")
-				.short('h')
-				.long("help")
-			)
-
 			.arg(Arg::new("cmd.add.Type")
 				.short('T')
 				.long("type")
@@ -83,7 +84,7 @@ pub fn parse_arguments(args: Vec<String>) {
 
 			.arg(Arg::new("cmd.add.Version")
 				.short('V')
-				.long("version")
+				.long("Version")
 			)
 
 			.arg(Arg::new("cmd.add.Name")
@@ -207,15 +208,6 @@ pub fn parse_arguments(args: Vec<String>) {
 		)
 
 		// Global Options
-		/*
-		.arg(Arg::new("cmd.help")
-			.short('h')
-			.long("help")
-			.num_args(0)
-			.help("Print this help messages.")
-			.global(true))
-
-		 */
 
 		.arg(Arg::new("cmd.version")
 			.short('v')
@@ -224,13 +216,11 @@ pub fn parse_arguments(args: Vec<String>) {
 			.help("Print version info and exit")
 			.global(true))
 
-
-
 		.get_matches();
 
 	if cmd.get_flag("cmd.version") {
 		println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
-		return;
+		exit(0);
 	}
 	else {
 		match cmd.subcommand() {
@@ -238,7 +228,7 @@ pub fn parse_arguments(args: Vec<String>) {
 			Some(("del", _)) => desktop_file_del::init(args),
 			Some(("get", _)) => desktop_file_get::init(args),
 			Some(("set", _)) => desktop_file_set::init(args),
-			_ => {},
+			_ => exit(0),
 		}
 	}
 }
