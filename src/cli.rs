@@ -17,7 +17,6 @@ mod file {
 }
 
 pub enum Help {
-	General,
 	Add,
 	Del,
 	Get,
@@ -27,7 +26,6 @@ pub enum Help {
 impl Help {
 	fn help_strings() -> HashMap<&'static str, &'static str> {
 		let mut map = HashMap::new();
-		map.insert("general", include_str!("help/help"));
 		map.insert("subcommand-add", include_str!("help/subcommand-add"));
 		map.insert("subcommand-del", include_str!("help/subcommand-del"));
 		map.insert("subcommand-get", include_str!("help/subcommand-get"));
@@ -45,13 +43,19 @@ impl Help {
 pub fn parse_arguments(args: Vec<String>) {
 	let cmd = Command::new("DesktopFile-Creator")
 
+
 		// Global Settings
-		.version("0.1.0")
-		.disable_help_flag(true)
-		.disable_version_flag(true)
+		.arg_required_else_help(true)
+		.help_template("\
+		{usage-heading} {bin} [COMMANDS] [ARGS]\n\
+		{tab} or: {bin} [OPTIONS]\n\n\
+		{all-args}\n\n\
+		Run 'DesktopFile-Creator COMMAND --help' for more information on a command"
+		)
 
 		// Subcommands
 		.subcommand(Command::new("add")
+			.about("Create a new .desktop file from AppImage, Command, Executable file or Script")
 			.arg(Arg::new("cmd.base64")
 				.short('b')
 				.long("base64")
@@ -177,6 +181,7 @@ pub fn parse_arguments(args: Vec<String>) {
 		)
 
 		.subcommand(Command::new("del")
+			.about("Delete existing desktop file")
 			.arg(Arg::new("cmd.del.force")
 				.short('f')
 				.long("force")
@@ -192,35 +197,39 @@ pub fn parse_arguments(args: Vec<String>) {
 		)
 
 		.subcommand(Command::new("get")
+			.about("Get desktop file key's value(s)")
 			// TODO;
 		)
 
 		.subcommand(Command::new("set")
+			.about("Set desktop file key's value")
 		    // TODO;
 		)
 
 		// Global Options
+		/*
 		.arg(Arg::new("cmd.help")
 			.short('h')
 			.long("help")
 			.num_args(0)
+			.help("Print this help messages.")
 			.global(true))
+
+		 */
 
 		.arg(Arg::new("cmd.version")
 			.short('v')
 			.long("version")
 			.num_args(0)
+			.help("Print version info and exit")
 			.global(true))
+
 
 
 		.get_matches();
 
-	if cmd.get_flag("cmd.help") {
-		Help::print_help("general");
-		return;
-	}
-	else if cmd.get_flag("cmd.version") {
-		println!("{}", env!("CARGO_PKG_VERSION"));
+	if cmd.get_flag("cmd.version") {
+		println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
 		return;
 	}
 	else {
